@@ -22,7 +22,7 @@ class Item(Resource):
            return {'items': [item.json()]}
         return {'message': 'item was not found'}
     
-    @jwt_refresh_token_required
+    @jwt_required
     def post(self, name):
         if ItemModel.find_by_name(name):
            return {"message": "Item with name {} already exists.".format(name)}, 400
@@ -35,14 +35,14 @@ class Item(Resource):
         
         return item.json(), 201
     
-    @jwt_refresh_token_required
+    @jwt_required
     def delete(self, name):
         item = ItemModel.find_by_name(name)
         if item:
            item.delete_from_db()
         return {"message": "item successfully deleted"}
     
-    @jwt_refresh_token_required
+    @jwt_required
     def put(self, name):
         data = Item.parser.parse_args()
         item = ItemModel.find_by_name(name)
